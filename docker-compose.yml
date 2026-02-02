@@ -1,37 +1,55 @@
 version: "3.8"
 
 services:
-  caddy:
-    image: caddy:latest
-    container_name: caddy
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
-    environment:
-      - ACME_EMAIL=sean@colsonfamily.net
+    n8n:
+      image: n8nio/n8n:latest
+      container_name: n8n
+      restart: unless-stopped
+      expose:
+        - "5678"
+      env_file:
+        - ./services/n8n/.env
+      volumes:
+        - n8n_data:/home/node/.n8n
+        - ./services/n8n/data:/home/node/.n8n # Optional: keep bind mount if you want host access
 
-  echo:
-    image: ealen/echo-server:latest
-    container_name: echo
-    restart: unless-stopped
-    expose:
-      - "80"
+    caddy:
+      image: caddy:latest
+      container_name: caddy
+      restart: unless-stopped
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - ./Caddyfile:/etc/caddy/Caddyfile
+        - caddy_data:/data
+        - caddy_config:/config
+      environment:
+        - ACME_EMAIL=sean@colsonfamily.net
 
-  homeassistant:
-    image: homeassistant/home-assistant:stable
-    container_name: homeassistant
-    restart: unless-stopped
-    expose:
-      - "8123"
-    volumes:
-      - ./services/homeassistant/configuration.yaml:/config/configuration.yaml
-      - ./services/homeassistant/data:/config
+
+    echo:
+      image: ealen/echo-server:latest
+      container_name: echo
+      restart: unless-stopped
+      expose:
+        - "80"
+
+
+    homeassistant:
+      image: homeassistant/home-assistant:stable
+      container_name: homeassistant
+      restart: unless-stopped
+      expose:
+        - "8123"
+      volumes:
+        - homeassistant_data:/config
+        - ./services/homeassistant/configuration.yaml:/config/configuration.yaml # Optional: keep bind mount for config
+        - ./services/homeassistant/data:/config # Optional: keep bind mount for data
+
 
 volumes:
   caddy_data:
   caddy_config:
+  n8n_data:
+  homeassistant_data:
