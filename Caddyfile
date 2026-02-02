@@ -1,0 +1,23 @@
+(ssl) {
+  tls sean@colsonfamily.net
+}
+
+echo.colsonfamily.net {
+  import ssl
+  reverse_proxy echo:80
+}
+
+home.colsonfamily.net {
+  import ssl
+  reverse_proxy homeassistant:8123
+}
+
+n8n.colsonfamily.net {
+  import ssl
+  reverse_proxy n8n:5678
+}
+
+appwrite.colsonfamily.net {
+  import ssl
+  reverse_proxy appwrite:80
+}
