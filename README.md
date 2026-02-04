@@ -29,5 +29,5 @@ The primary goal is to use Docker and a reverse proxy to securely host and acces
 1.  Add Echo service to the reverse proxy. (done)
 2.  Add SSL using LetsEncrypt to Echo (sean@colsonfamily.net) (done)
 3.  Add HomeAssistant to the reverse proxy. (done)
-4.  Add N8N to the reverse proxy. (next)
+4.  Add N8N to the reverse proxy. (done)
 5.  Add AppWrite to the reverse proxy. (to be done)

@@ -1,17 +1,5 @@
-version: "3.8"
 
 services:
-    n8n:
-      image: n8nio/n8n:latest
-      container_name: n8n
-      restart: unless-stopped
-      expose:
-        - "5678"
-      env_file:
-        - ./services/n8n/.env
-      volumes:
-        - n8n_data:/home/node/.n8n
-        - ./services/n8n/data:/home/node/.n8n # Optional: keep bind mount if you want host access
 
     caddy:
       image: caddy:latest
@@ -22,8 +10,8 @@ services:
         - "443:443"
       volumes:
         - ./Caddyfile:/etc/caddy/Caddyfile
-        - caddy_data:/data
-        - caddy_config:/config
+        - ./data/caddy/data:/data
+        - ./data/caddy/config:/config
       environment:
         - ACME_EMAIL=sean@colsonfamily.net
 
@@ -43,13 +31,17 @@ services:
       expose:
         - "8123"
       volumes:
-        - homeassistant_data:/config
+        - ./data/homeassistant/config:/config
         - ./services/homeassistant/configuration.yaml:/config/configuration.yaml # Optional: keep bind mount for config
-        - ./services/homeassistant/data:/config # Optional: keep bind mount for data
 
+    n8n:
+      image: n8nio/n8n:latest
+      container_name: n8n
+      restart: unless-stopped
+      expose:
+        - "5678"
+      env_file:
+        - ./services/n8n/.env
+      volumes:
+        - ./data/n8n:/home/node/.n8n
 
-volumes:
-  caddy_data:
-  caddy_config:
-  n8n_data:
-  homeassistant_data:

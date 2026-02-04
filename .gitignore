@@ -6,5 +6,6 @@
 
 client_secret_336477014981-isioajjcvl53fmtgaj1c8tqb1eeaarrb.apps.googleusercontent.com.json
 # Ignore all data folders in services
-services/*/data/
-services/*/data/**
+/data/
+*/data/
+*/data/**
